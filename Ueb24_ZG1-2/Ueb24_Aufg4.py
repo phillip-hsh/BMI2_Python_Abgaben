@@ -26,10 +26,10 @@ lbl_mad.pack()
 def btn_berechne_click():
     sys = float(txt_sys.get())
     dias = float(txt_dia.get())
-    lbl_mad["text"] = "MAD: " + str(mad.mad_berechnen(sys, dias))
+    lbl_mad.configure(text="MAD: " + str(mad.mad_berechnen(sys, dias)))
 
  # Erzeugung des Buttons und zuweisen der Clickfunktion
-btn_berechne = Button(mainform, text="Magie", command=btn_berechne_click)
+btn_berechne = Button(mainform, text="MAD berechnen", command=btn_berechne_click)
 btn_berechne.pack()
 
 mainform.mainloop()

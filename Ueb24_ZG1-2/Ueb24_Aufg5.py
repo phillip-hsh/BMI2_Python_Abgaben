@@ -4,6 +4,7 @@ def btn_einloggen_click():
     benutzer = str(txt_benutzer.get())
     passwort = str(txt_passwort.get())
 
+    # Erzeuge neues Unterfenster
     newWindow = Toplevel(login)
     newWindow.title("Antwort")
     label_user = Label(newWindow, text = benutzer)
@@ -25,8 +26,6 @@ def btn_einloggen_click():
      # Modales Verhalten erzeugen
     newWindow.grab_set()
 
-    # ## Testkommentar
-    
 login = Tk()
 login.title("Login")
 login.geometry("250x140")

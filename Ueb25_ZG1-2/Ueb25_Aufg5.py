@@ -1,3 +1,6 @@
+# JUST A COPY FROM Aufg.4!!!
+# NOT FINISHED YET
+
 class Produkt:
 
     MWST = 0.19

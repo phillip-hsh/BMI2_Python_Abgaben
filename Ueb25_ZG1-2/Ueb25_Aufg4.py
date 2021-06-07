@@ -2,6 +2,8 @@ class Produkt:
 
     MWST = 0.19
     ERM_MWST = 0.7
+    WAEHRUNG = '€'
+    ZEILENUMBRUCH = '\n'
 
     def __init__(self, artikel_nr, bezeichnung, preis, isErmaessigt):
         self.__Artikel_Nr = artikel_nr
@@ -10,15 +12,23 @@ class Produkt:
         self.__Mehrwertsteuer = Produkt.ERM_MWST if (isErmaessigt) else Produkt.MWST
 
     def __str__(self):
-        return 'Ich bin ein tolles Produkt'
+        rep = 'Artikelnr: ' + str(self.__Artikel_Nr) + Produkt.ZEILENUMBRUCH
+        rep += 'Bezeichnung: ' + str(self.__Bezeichnung) + Produkt.ZEILENUMBRUCH
+        rep += 'Preis (brutto): ' + str(self.Bruttopreis) + Produkt.WAEHRUNG + Produkt.ZEILENUMBRUCH
+        rep += 'Mehrwertsteuer: ' + str(self.__Mehrwertsteuer * 100) + '%'
+        return rep
 
     @property
-    def Mehrwertsteuer(self):
-        return self.__Mehrwertsteuer
+    def Artikelnr(self):
+        return self.__Artikel_Nr
+
+    @property
+    def Bezeichnung(self):
+        return self.__Bezeichnung
     
     @property
     def Bruttopreis(self):
-        return self.__PreisNetto + self.__PreisNetto * self.__Mehrwertsteuer
+        return round(self.__PreisNetto + self.__PreisNetto * self.__Mehrwertsteuer, 2)
 
 class Buch(Produkt):
     
@@ -27,17 +37,47 @@ class Buch(Produkt):
         self.__Seitenzahl = seitenzahl
 
     def __str__(self):
-        return 'Ich bin ein tolles Buch'
+        rep =  'Buch:\n'
+        rep += super().__str__() + super().ZEILENUMBRUCH
+        rep += 'Seitenzahl: ' + str(self.__Seitenzahl)
+        return rep
+
+    @property
+    def Artikelnr(self):
+        return super().Artikelnr
+
+    @property
+    def Bezeichnung(self):
+        return super().Bezeichnung
+    
+    @property
+    def Bruttopreis(self):
+        return super().Bruttopreis
+
 
 class DVD(Produkt):
-    
+
     def __init__(self, artikel_nr, bezeichnung, preis, isErmaessigt, fsk):
         super().__init__(artikel_nr, bezeichnung, preis, isErmaessigt)
         self.__Fsk = fsk
 
     def __str__(self):
-        return 'Ich bin eine tolle DVD'
+        rep =  'DVD:\n'
+        rep += super().__str__() + super().ZEILENUMBRUCH
+        rep += 'FSK: ' + str(self.__Fsk)
+        return rep
 
+    @property
+    def Artikelnr(self):
+        return super().Artikelnr
+    
+    @property
+    def Bezeichnung(self):
+        return super().Bezeichnung
+
+    @property
+    def Bruttopreis(self):
+        return super().Bruttopreis
 
 class Warenkorb:
     
@@ -50,20 +90,37 @@ class Warenkorb:
     def RemoveArtikel(self, object):
         self.__Artikel.remove(object)
 
+    def __str__(self):
+        rep =  'Warenkorb:\n'
+
+        for element in self.__Artikel:
+            rep += str(type(element).__name__) + ' - ' + element.Bezeichnung + ' (Art.-Nr: '  + str(element.Artikelnr) + ')\t' + str(element.Bruttopreis) + ' Euro'
+            rep += '\n'
+        
+        rep += '-----------------------------------------------\n'
+        rep += 'Gesamtpreis: ' + str(self.Gesamtpreis) + ' Euro'
+
+        return rep
+    
+    #------------------------------------------------------------------------------------------------------
+
     @property
     def Gesamtpreis(self):
         sum = 0
+        
         for element in self.__Artikel:
             sum += element.Bruttopreis
 
         return sum
 
 
-buch1 = Buch(1, 'Test1', 10.99, True, 345)
-buch2 = Buch(1, 'Test2', 11.99, True, 456)
+buch1 = Buch(3445435, 'Test1', 10.99, True, 345)
+buch2 = Buch(5686757, 'Test2', 11.99, True, 456)
 
-dvd1 = DVD(1, 'Test3', 12.99, False, 16)
-dvd2 = DVD(1, 'Test4', 13.99, False, 18)
+dvd1 = DVD(456787, 'Test3', 12.99, False, 16)
+dvd2 = DVD(453346, 'Test4', 13.99, False, 18)
+
+print(dvd1)
 
 korb1 = Warenkorb()
 korb1.AddArtikel(buch1)
@@ -72,3 +129,4 @@ korb1.AddArtikel(dvd1)
 korb1.AddArtikel(dvd2)
 
 print(korb1.Gesamtpreis)
+print(korb1)

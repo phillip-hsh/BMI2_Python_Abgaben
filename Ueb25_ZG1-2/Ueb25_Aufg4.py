@@ -4,6 +4,7 @@ class Produkt:
     ERM_MWST = 0.7
     WAEHRUNG = '€'
     ZEILENUMBRUCH = '\n'
+    PROZENT = '%'
 
     def __init__(self, artikel_nr, bezeichnung, preis, isErmaessigt):
         self.__Artikel_Nr = artikel_nr
@@ -15,7 +16,7 @@ class Produkt:
         rep = 'Artikelnr: ' + str(self.__Artikel_Nr) + Produkt.ZEILENUMBRUCH
         rep += 'Bezeichnung: ' + str(self.__Bezeichnung) + Produkt.ZEILENUMBRUCH
         rep += 'Preis (brutto): ' + str(self.Bruttopreis) + Produkt.WAEHRUNG + Produkt.ZEILENUMBRUCH
-        rep += 'Mehrwertsteuer: ' + str(self.__Mehrwertsteuer * 100) + '%'
+        rep += 'Mehrwertsteuer: ' + str(self.__Mehrwertsteuer * 100) + Produkt.PROZENT
         return rep
 
     @property
@@ -91,27 +92,23 @@ class Warenkorb:
         self.__Artikel.remove(object)
 
     def __str__(self):
-        rep =  'Warenkorb:\n'
+        rep =  'Rechnung:\n'
+
+        sum = 0
 
         for element in self.__Artikel:
+
+            sum += element.Bruttopreis
+
             rep += str(type(element).__name__) + ' - ' + element.Bezeichnung + ' (Art.-Nr: '  + str(element.Artikelnr) + ')\t' + str(element.Bruttopreis) + ' Euro'
             rep += '\n'
         
         rep += '-----------------------------------------------\n'
-        rep += 'Gesamtpreis: ' + str(self.Gesamtpreis) + ' Euro'
+        rep += 'Gesamtpreis: ' + str(sum) + ' Euro'
 
         return rep
     
     #------------------------------------------------------------------------------------------------------
-
-    @property
-    def Gesamtpreis(self):
-        sum = 0
-        
-        for element in self.__Artikel:
-            sum += element.Bruttopreis
-
-        return sum
 
 
 buch1 = Buch(3445435, 'Test1', 10.99, True, 345)
@@ -128,5 +125,5 @@ korb1.AddArtikel(buch2)
 korb1.AddArtikel(dvd1)
 korb1.AddArtikel(dvd2)
 
-print(korb1.Gesamtpreis)
+print('\n')
 print(korb1)
